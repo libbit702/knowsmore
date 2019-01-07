@@ -14,7 +14,8 @@ pip install sqlalchemy
 ```
 
 ## Project Structure
-- PROJECT ROOT
+
+PROJECT ROOT
 	|- Knowsmore (folder)
 		|- model (mongoengine and sqlalchemy ORM, used for DB storage, dont conflict with scrapy items)
 		|- pipeline (diffed by mongoengine and sqlalchemy)
