@@ -7,12 +7,18 @@ from knowsmore.items import YoutubeItem
 from ..common import *
 
 class YoutubeSpider(scrapy.Spider):
+    custom_settings = {
+        'DOWNLOADER_MIDDLEWARES' : {
+        }
+    }
+
     name = 'youtube'
     allowed_domains = ['www.youtube.com']
     start_urls = ['https://www.youtube.com/watch?v=3vkqOdMBP48']
 
     def parse(self, response):
-        ytInitialData = r1(r'window\["ytInitialData"\] = (.*?)}};', response.body)
+        ytInitialData = r1(r'ytInitialData"\] = (.*?)}};', response.body)
+
         if ytInitialData:
             ytInitialData = '%s}}' % ytInitialData
             ytInitialDataObj = json.loads(ytInitialData)
@@ -22,7 +28,6 @@ class YoutubeSpider(scrapy.Spider):
                 title = videoInfo['title']['simpleText'].encode('utf-8'),
                 view_count = videoInfo['viewCount']['videoViewCountRenderer']['viewCount']['simpleText']
             )
-
-            # yield Item
-            print Item
+            yield Item
+            
             

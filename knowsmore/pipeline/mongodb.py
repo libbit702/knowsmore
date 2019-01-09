@@ -18,6 +18,9 @@ class MongoPipeline(object):
     def process_item(self, item, spider):
 #==================================================
         if spider.name is 'youtube_list':
+            self.set_youtube_list_item(item)
+            return item
+        if spider.name is 'youtube':
             self.set_youtube_item(item)
             return item
 #==================================================
@@ -31,6 +34,7 @@ class MongoPipeline(object):
                 return len(item['cards'])
             return None
 #==================================================
+        return item
 
     '''
     Save Weibo Status Item to DB
@@ -88,11 +92,23 @@ class MongoPipeline(object):
 
         wItem.save()
 
-
     '''
     Save Youtube Item to DB
     '''
     def set_youtube_item(self, item):
+        yItem = YoutubeModel.objects(title=item['title']).first()
+        if not yItem:
+            yItem = YoutubeModel(
+                title = item['title'],
+                view_count = item['view_count'],
+            )
+            
+        yItem.save()
+
+    '''
+    Save Youtube List Item to DB
+    '''
+    def set_youtube_list_item(self, item):
         playlistItem = YoutubePlaylistModel.objects(playlist_id=item['playlist_id']).first()
         if not playlistItem:
             playlistItem = YoutubePlaylistModel(

@@ -6,5 +6,3 @@ class SqlalchemyPipeline(object):
         db = create_engine(db_string)
         Session = sessionmaker(db)
         session = Session()
-        if spider.name is 'psn_game':
-            return item

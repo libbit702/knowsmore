@@ -18,6 +18,14 @@ class YoutubePlaylistModel(Document):
     meta = {
         'collection':'youtube_playlist'
     }
+
+class YoutubeModel(Document):
+    title = StringField(required=True)
+    view_count = StringField()
+
+    meta = {
+        'collection':'youtube'
+    }
 # ================== Youtube Playlist END ======================== #
 
 

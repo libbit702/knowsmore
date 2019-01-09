@@ -57,8 +57,8 @@ DOWNLOAD_DELAY = 5
 DOWNLOADER_MIDDLEWARES = {
     'knowsmore.middlewares.RandomUserAgent': 1,
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': 80,    
-    'scrapy_proxies.RandomProxy': 100,
-    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
+    # 'scrapy_proxies.RandomProxy': 100,
+    # 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
     ############################################################
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'knowsmore.middlewares.RandomHttpProxyMiddleware': None,
@@ -117,16 +117,16 @@ STORAGE_TYPE = 'database'
 DB_DRIVER = 'mongodb'
 DB_HOST = 'localhost'
 DB_PORT = 27017
-DB_NAME = 'YOUR DB NAME'
+DB_NAME = ''
 DB_USERNAME = ''
 DB_PASSWORD = ''
 
 # ================= scrapy-redis ======================
 # Enables scheduling storing requests queue in redis.
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
 # Ensure all spiders share same duplicates filter through redis.
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 # Default requests serializer is pickle, but it can be changed to any module
 # with loads and dumps functions. Note that pickle is not compatible between
@@ -153,9 +153,9 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 #SCHEDULER_IDLE_BEFORE_CLOSE = 10
 
 # Store scraped item in redis for post-processing.
-ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300
-}
+# ITEM_PIPELINES = {
+#     'scrapy_redis.pipelines.RedisPipeline': 300
+# }
 
 # The item pipeline serializes and stores the items in this redis key.
 #REDIS_ITEMS_KEY = '%(spider)s:items'
