@@ -117,7 +117,7 @@ STORAGE_TYPE = 'database'
 DB_DRIVER = 'mongodb'
 DB_HOST = 'localhost'
 DB_PORT = 27017
-DB_NAME = ''
+DB_NAME = 'fatedestiny'
 DB_USERNAME = ''
 DB_PASSWORD = ''
 

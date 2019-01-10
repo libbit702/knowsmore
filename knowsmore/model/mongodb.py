@@ -71,3 +71,17 @@ class WeiboStatusModel(Document):
         'collection':'weibo_status'
     }
 # ================== Weibo User END ======================== #
+
+# ================== Youku List BEGIN ======================== #
+class YoukuListModel(Document):
+    link = StringField(required=True, unique=True)
+    thumb_img = StringField()
+    title = StringField()
+    tag = ListField()
+    actors = ListField()
+    play_times = StringField()
+
+    meta = {
+        'collection':'youku_list'
+    }
+# ================== Youku List END ======================== #

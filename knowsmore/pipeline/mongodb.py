@@ -24,6 +24,10 @@ class MongoPipeline(object):
             self.set_youtube_item(item)
             return item
 #==================================================
+        if spider.name is 'youku_list':
+            self.set_youku_list_item(item)
+            return item
+#==================================================
         if spider.name is 'weibo_user':
             className = item.__class__.__name__
             if className == 'WeiboUserItem':
@@ -44,79 +48,79 @@ class MongoPipeline(object):
             if cItem['card_type'] != 9:
                 continue
 
-            sItem = WeiboStatusModel.objects(mid=cItem['mblog']['mid']).first()
-            if not sItem:
-                sItem = WeiboStatusModel(
+            dbItem = WeiboStatusModel.objects(mid=cItem['mblog']['mid']).first()
+            if not dbItem:
+                dbItem = WeiboStatusModel(
                     mid = cItem['mblog']['mid'],
                     mblog = cItem['mblog']
                 )
 
-            sItem.save()
+            dbItem.save()
             
 
     '''
     Save Weibo User Item to DB
     '''
     def set_weibo_user_item(self, item):
-        wItem = WeiboUserModel.objects(uid=item['user']['id']).first()
-        if not wItem:
-            wItem = WeiboUserModel(
+        dbItem = WeiboUserModel.objects(uid=item['user']['id']).first()
+        if not dbItem:
+            dbItem = WeiboUserModel(
                 uid = item['user']['id'],
             )
 
-        wItem.fans_url = item['fans_url']
-        wItem.follow_url = item['follow_url']
-        wItem.more_url = item['more_url']
-        wItem.screen_name = item['user']['screen_name']
-        wItem.profile_image_url = item['user']['profile_image_url']
-        wItem.profile_url = item['user']['profile_url']
-        wItem.statuses_count = item['user']['statuses_count']
-        wItem.verified = item['user']['verified']
-        wItem.verified_type = item['user']['verified_type']
-        wItem.verified_type_ext = item['user']['verified_type_ext']
-        wItem.verified_reason = item['user']['verified_reason']
-        wItem.close_blue_v = item['user']['close_blue_v']
-        wItem.description = item['user']['description']
-        wItem.gender = item['user']['gender']
-        wItem.mbtype = item['user']['mbtype']
-        wItem.urank = item['user']['urank']
-        wItem.mbrank = item['user']['mbrank']
-        wItem.follow_me = item['user']['follow_me']
-        wItem.following = item['user']['following']
-        wItem.followers_count = item['user']['followers_count']
-        wItem.follow_count = item['user']['follow_count']
-        wItem.cover_image_phone = item['user']['cover_image_phone']
-        wItem.avatar_hd = item['user']['avatar_hd']
-        wItem.like = item['user']['like']
-        wItem.like_me = item['user']['like_me']
+        dbItem.fans_url = item['fans_url']
+        dbItem.follow_url = item['follow_url']
+        dbItem.more_url = item['more_url']
+        dbItem.screen_name = item['user']['screen_name']
+        dbItem.profile_image_url = item['user']['profile_image_url']
+        dbItem.profile_url = item['user']['profile_url']
+        dbItem.statuses_count = item['user']['statuses_count']
+        dbItem.verified = item['user']['verified']
+        dbItem.verified_type = item['user']['verified_type']
+        dbItem.verified_type_ext = item['user']['verified_type_ext']
+        dbItem.verified_reason = item['user']['verified_reason']
+        dbItem.close_blue_v = item['user']['close_blue_v']
+        dbItem.description = item['user']['description']
+        dbItem.gender = item['user']['gender']
+        dbItem.mbtype = item['user']['mbtype']
+        dbItem.urank = item['user']['urank']
+        dbItem.mbrank = item['user']['mbrank']
+        dbItem.follow_me = item['user']['follow_me']
+        dbItem.following = item['user']['following']
+        dbItem.followers_count = item['user']['followers_count']
+        dbItem.follow_count = item['user']['follow_count']
+        dbItem.cover_image_phone = item['user']['cover_image_phone']
+        dbItem.avatar_hd = item['user']['avatar_hd']
+        dbItem.like = item['user']['like']
+        dbItem.like_me = item['user']['like_me']
 
-        wItem.save()
+        dbItem.save()
 
     '''
     Save Youtube Item to DB
     '''
     def set_youtube_item(self, item):
-        yItem = YoutubeModel.objects(title=item['title']).first()
-        if not yItem:
-            yItem = YoutubeModel(
+        dbItem = YoutubeModel.objects(title=item['title']).first()
+        if not dbItem:
+            dbItem = YoutubeModel(
                 title = item['title'],
                 view_count = item['view_count'],
             )
             
-        yItem.save()
+        dbItem.save()
 
     '''
     Save Youtube List Item to DB
     '''
     def set_youtube_list_item(self, item):
-        playlistItem = YoutubePlaylistModel.objects(playlist_id=item['playlist_id']).first()
-        if not playlistItem:
-            playlistItem = YoutubePlaylistModel(
+        dbItem = YoutubePlaylistModel.objects(playlist_id=item['playlist_id']).first()
+        if not dbItem:
+            dbItem = YoutubePlaylistModel(
                 playlist_id = item['playlist_id'],
                 videos = []
             )
 
-        playlistItem['videos'] = []
+        dbItem['videos'] = []
         for video in item['videos']:
             playlistVideoItem = YoutubePlaylistVideoModel(
                 playlist_id = item['playlist_id'],
@@ -127,6 +131,29 @@ class MongoPipeline(object):
                 length_seconds = video['length_seconds'],
                 is_playable = video['is_playable']
             )
-            playlistItem['videos'].append(playlistVideoItem)
-        playlistItem.save()
+            dbItem['videos'].append(playlistVideoItem)
+        dbItem.save()
+
+    '''
+    Save Youku List Item to DB
+    '''
+    def set_youku_list_item(self, item):
+        dbItem = YoukuListModel.objects(link=item['link']).first()
+        if not dbItem:
+            dbItem = YoukuListModel(
+                thumb_img = item['thumb_img'],
+                title = item['title'],
+                link = item['link'],
+                tag = item['tag'],
+                actors = item['actors'],
+                play_times = item['play_times'],
+            )
+
+        dbItem.thumb_img = item['thumb_img']
+        dbItem.title = item['title']
+        dbItem.tag = item['tag']
+        dbItem.actors = item['actors']
+        dbItem.play_times = item['play_times']
+
+        dbItem.save()
 

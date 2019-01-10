@@ -38,3 +38,11 @@ class YoutubePlaylistVideoItem(Item):
     length_seconds = scrapy.Field()
     is_playable = scrapy.Field()
 
+# Youku Playlist Page
+class YoukuListItem(Item):
+    thumb_img = scrapy.Field()
+    title = scrapy.Field()
+    link = scrapy.Field()
+    tag = scrapy.Field()
+    actors = scrapy.Field()
+    play_times = scrapy.Field()
